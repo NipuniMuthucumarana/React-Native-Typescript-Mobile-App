@@ -49,7 +49,7 @@ const Form = (props: Name) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              SignupService({ email, password, confirmPassword });
+              SignupService({ email, password, confirmPassword, navigation });
               setEmail('');
               setPassword('');
               setConfirmPassword('');

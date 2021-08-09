@@ -5,8 +5,10 @@ interface Props {
   email: string;
   password: string;
   confirmPassword: string;
+  navigation: any;
 }
-const SignupService = async ({ email, password, confirmPassword }: Props) => {
+
+const SignupService = async ({ email, password, confirmPassword, navigation }: Props) => {
   console.log(email);
   try {
     type Response = {
@@ -46,6 +48,7 @@ const SignupService = async ({ email, password, confirmPassword }: Props) => {
 
     if (response.data.token) {
       Alert.alert('Welcome to My App', 'You registered successfully!', [{ text: 'OK' }]);
+      navigation.navigate('SignIn');
     }
   } catch (error) {
     console.log(error);

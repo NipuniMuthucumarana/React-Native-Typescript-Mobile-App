@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 import axios, { AxiosResponse } from 'axios';
-
 interface Props {
   email: string;
   password: string;
@@ -39,7 +38,7 @@ const SigninService = async ({ email, password, navigation }: Props) => {
     const response = await axios.post<Response, AxiosResponse<Response>>(url, data, config)
       
     if (response.data.token) {
-      navigation.navigate('Dashboard');
+      navigation.navigate('DrawerRoutes');
       //Alert.alert('Welcome to My App', 'You logged in successfully!', [{ text: 'OK' }]);
     }  
     console.log(response.data.token);

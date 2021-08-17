@@ -70,9 +70,9 @@ const DashboardScreen = ({ drawerAnimationStyle, navigation }: any) => {
         }}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0}
-        renderItem={({ item }: { item: Data }) => {
+        renderItem={({ item, index }: { item: Data; index:number }) => {
           return (
-            <Pressable style={styles.view} onPress={() => {navigation.navigate('Profile', { item: item }); ShowNotification('Hello', 'Message')}}>
+            <Pressable style={styles.view} onPress={() => {navigation.navigate('Profile', { item: item }); ShowNotification('Hello', 'Welcome to '+item.first_name+"'s Profile", index)}}>
               <Image source={{ uri: item.avatar }} style={{ width: 70, height: 70, borderRadius: 70, marginRight: 10 }} />
               <Text style={styles.text}>{item.first_name+ ' '+item.last_name}</Text>
             </Pressable>

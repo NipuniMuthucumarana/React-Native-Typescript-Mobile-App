@@ -17,10 +17,12 @@ interface Response {
     last_name: string;
   }>;
 }
-const DashboardService = async (page: number) => {
+
+const HomeService = async () => {
   try {
-    const url = 'https://reqres.in/api/users?page=' + page;
+    const url = 'https://reqres.in/api/users?delay=3';
     const response = await axios.get<Response, AxiosResponse<Response>>(url);
+
     if (response) {
       return response.data.data;
     }
@@ -29,4 +31,4 @@ const DashboardService = async (page: number) => {
   }
 };
 
-export default DashboardService;
+export default HomeService;

@@ -7,14 +7,13 @@ interface Props {
 }
 
 const SigninService = async ({ email, password, navigation }: Props) => {
-  console.log(email);
   try {
     type Response = {
       token: string
     }
 
     const url = 'https://reqres.in/api/login';
-
+    
     const data = {
       email: email,
       password: password,
@@ -38,7 +37,7 @@ const SigninService = async ({ email, password, navigation }: Props) => {
     const response = await axios.post<Response, AxiosResponse<Response>>(url, data, config)
       
     if (response.data.token) {
-      navigation.navigate('DrawerRoutes');
+      navigation.navigate('DrawerRoutes', {email: email});
       //Alert.alert('Welcome to My App', 'You logged in successfully!', [{ text: 'OK' }]);
     }  
     console.log(response.data.token);

@@ -4,88 +4,125 @@ import { createStackNavigator, StackNavigationProp } from '@react-navigation/sta
 import SigninScreen from '../../auth/screens/SigninScreen';
 import SignupScreen from '../../auth/screens/SignupScreen';
 import GetStartedScreen from '../../getStarted/screens/GetStartedScreen';
-import HomeScreen from '../../home/screens/HomeScreen'
-import DashboardScreen from '../../dashboard/screens/DashboardScreen';
-import ProfileScreen from '../../dashboard/screens/ProfileScreen'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import ProfileScreen from '../../dashboard/screens/ProfileScreen';
+import EditUserScreen from '../../user/screens/EditUserScreen';
+import CustomDrawer from '../../dashboard/navigation/CustomDrawer';
+// import HomeScreen from '../../home/screens/HomeScreen';
+// import DashboardScreen from '../../dashboard/screens/DashboardScreen';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import CreateUserScreen from '../../user/screens/CreateUserScreen';
+// import UserDetailScreen from '../../user/screens/UserDetailsScreen';
 
-const Drawer = createDrawerNavigator();
-
-type RootStackParamList = {
-  GetStarted: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-  Home: undefined;
-  Dashboard: undefined;
-  Profile: undefined;
-  Drawer: undefined;
-};
-
-// export type StackNavProps<T extends keyof RootStackParamList> = {
-//   navigation: StackNavigationProp<RootStackParamList, T>;
-//   route: RouteProp<RootStackParamList, T>;
-// };
-
-//const Stack = createStackNavigator<RootStackParamList>();
 const Stack = createStackNavigator();
 
-const DrawerRoutes = () => {
-  return (
-    <Drawer.Navigator
-      initialRouteName='Home'
-        drawerPosition='left'
-        drawerType='front'
-        edgeWidth={500}
-        hideStatusBar={false}
-        overlayColor='#00000090'
-        drawerStyle={{
-          backgroundColor: '#e6e6e6',
-          width: 250,
-        }}
-        screenOptions={{
-          headerShown: true,
-          swipeEnabled: true,
-          gestureEnabled: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: '#455a64'
-          },
-          headerTintColor: '#ffffff',
-          headerTitleStyle: {
-            fontSize: 25,
-            fontWeight: 'bold',
-          }
-        }}
-    >
-      <Drawer.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ 
-          title:'Home',
-          drawerIcon: ({focused}) => (
-            <FontAwesome5
-              name='house-user'
-              size={focused ? 25 : 20}
-              color={focused ? '#0080ff' : '#999999'}
-            />
-          )
-        }}
-      />
-      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-    </Drawer.Navigator>
-  );
-}
+// type RootDrawerParamList = {
+//   Home: {
+//     email: {
+//       email: string;
+//     };
+//   };
+// };
 
-const StackNavigation =  ()=> {
+// type HomeScreenRouteProp = RouteProp<RootDrawerParamList, 'Home'>;
+
+// type RootStackParamList = {
+//     Home: undefined;
+//     Dashboard: undefined;
+//     CreateUser: undefined;
+//     UserDetails: undefined;
+//     LogOut: undefined;
+// };
+
+// type Props = {
+//   route: HomeScreenRouteProp;
+// };
+
+
+// const DrawerRoutes = ({ route }: Props) => {
+//   const { email } = route.params;
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName="Home"
+//       drawerPosition="left"
+//       drawerType="front"
+//       edgeWidth={500}
+//       hideStatusBar={false}
+//       overlayColor="#00000090"
+//       drawerStyle={{
+//         backgroundColor: '#e6e6e6',
+//         width: 250,
+//       }}
+//       screenOptions={{
+//         headerShown: true,
+//         swipeEnabled: true,
+//         gestureEnabled: true,
+//         headerTitleAlign: 'center',
+//         headerStyle: {
+//           backgroundColor: '#455a64',
+//         },
+//         headerTintColor: '#ffffff',
+//         headerTitleStyle: {
+//           fontSize: 25,
+//           fontWeight: 'bold',
+//         },
+//       }}>
+//       <Drawer.Screen
+//         name="Home"
+//         component={HomeScreen}
+//         initialParams={{ email: email }}
+//         options={{
+//           title: 'Home',
+//           drawerIcon: ({ focused }) => <FontAwesome5 name="home" size={focused ? 25 : 20} color={focused ? '#0080ff' : '#999999'} />,
+//         }}
+//       />
+//       <Drawer.Screen
+//         name="Dashboard"
+//         component={DashboardScreen}
+//         options={{
+//           title: 'Dashboard',
+//           drawerIcon: ({ focused }) => <FontAwesome5 name="columns" size={focused ? 25 : 20} color={focused ? '#0080ff' : '#999999'} />,
+//         }}
+//       />
+//       <Drawer.Screen
+//         name="CreateUser"
+//         component={CreateUserScreen}
+//         options={{
+//           title: 'Create User',
+//           drawerIcon: ({ focused }) => <FontAwesome5 name="user-plus" size={focused ? 25 : 20} color={focused ? '#0080ff' : '#999999'} />,
+//         }}
+//       />
+//       <Drawer.Screen
+//         name="UserDetails"
+//         component={UserDetailScreen}
+//         options={{
+//           title: 'User Details',
+//           drawerIcon: ({ focused }) => <FontAwesome5 name="user" size={focused ? 25 : 20} color={focused ? '#0080ff' : '#999999'} />,
+//         }}
+//       />
+//       <Drawer.Screen
+//         name="LogOut"
+//         component={UserDetailScreen}
+//         options={{
+//           title: 'Log Out',
+//           drawerIcon: ({ focused }) => (
+//             <FontAwesome5 name="sign-out-alt" size={focused ? 25 : 20} color={focused ? '#0080ff' : '#999999'} />
+//           ),
+//         }}
+//       />
+//     </Drawer.Navigator>
+//   );
+// };
+
+const StackNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="GetStarted">
         <Stack.Screen
           name="DrawerRoutes"
-          component={DrawerRoutes}
-          options={{ 
-            headerShown: false 
+          component={CustomDrawer}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -94,26 +131,53 @@ const StackNavigation =  ()=> {
           options={{
             headerShown: false,
           }}
-        /> 
+        />
         <Stack.Screen
           name="SignIn"
           component={SigninScreen}
           options={{
             headerShown: false,
           }}
-        /> 
+        />
         <Stack.Screen
           name="SignUp"
           component={SignupScreen}
           options={{
             headerShown: false,
           }}
-        /> 
+        />
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
-            headerShown: false,
+            headerShown: true,
+            gestureEnabled: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#455a64',
+            },
+            headerTintColor: '#ffffff',
+            headerTitleStyle: {
+              fontSize: 25,
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="EditUser"
+          component={EditUserScreen}
+          options={{
+            headerShown: true,
+            gestureEnabled: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#455a64',
+            },
+            headerTintColor: '#ffffff',
+            headerTitleStyle: {
+              fontSize: 25,
+              fontWeight: 'bold',
+            },
           }}
         />
       </Stack.Navigator>

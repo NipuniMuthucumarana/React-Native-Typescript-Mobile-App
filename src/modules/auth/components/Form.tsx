@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import SignupService from '../services/SignupService';
@@ -53,6 +53,7 @@ const Form = (props: Name) => {
               setEmail('');
               setPassword('');
               setConfirmPassword('');
+              Keyboard.dismiss();  
             }}>
             <Text style={styles.buttonText}>{name}</Text>
           </TouchableOpacity>
@@ -62,6 +63,7 @@ const Form = (props: Name) => {
           style={styles.button}
           onPress={() => {
             SigninService({ email, password, navigation });
+            Keyboard.dismiss();  
             setEmail('');
             setPassword('');
           }}>

@@ -9,7 +9,6 @@ interface Props {
 }
 
 const SignupService = async ({ email, password, confirmPassword, navigation }: Props) => {
-  console.log(email);
   try {
     type Response = {
       id: number,

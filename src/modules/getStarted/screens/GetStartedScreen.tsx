@@ -4,59 +4,33 @@ import { View, Text, StyleSheet, StatusBar, ImageBackground, useWindowDimensions
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import { Permission, PERMISSION_TYPE } from '../services/AppPermissionService';
+import PushNotification, { Importance } from 'react-native-push-notification';
 
 export default function Home({ navigation }: any) {
-  // const { Value, event, block, cond, eq, set, Clock, startClock, stopClock, debug, timing, clockRunning, interpolateNode, Extrapolate } =
-  //   Animated;
   const { Value, cond, eq, set } = Animated;
 
   useEffect(() => {
     async function appPermission() {
+      createChannel();
       await Permission.checkPermission(PERMISSION_TYPE.location);
     }
-    // Execute the created function directly
     appPermission();
   }, []);
 
-  // type Adaptable<T> =
-  //   | T
-  //   | AnimatedNode<T>
-  //   | ReadonlyArray<T | AnimatedNode<T> | ReadonlyArray<T | AnimatedNode<T>>>;
-
-  // interface TimingConfig {
-  //   toValue: Adaptable<number>;
-  //   duration: Adaptable<number>;
-  //   easing: EasingNodeFunction;
-  // }
-
-  // function runTiming({clock, value, dest}:any) {
-  //   const state = {
-  //     finished: new Value(0),
-  //     position: new Value(0),
-  //     time: new Value(0),
-  //     frameTime: new Value(0)
-  //   };
-
-  //   const config = {
-  //     duration: 1000,
-  //     toValue: new Value(0),
-  //     easing: Easing.inOut(Easing.ease)
-  //   };
-
-  //   return block([
-  //     cond(clockRunning(clock), 0, [
-  //       set(state.finished, 0),
-  //       set(state.time, 0),
-  //       set(state.position, value),
-  //       set(state.frameTime, 0),
-  //       set(config.toValue, dest),
-  //       startClock(clock)
-  //     ]),
-  //     timing(clock, state, config),
-  //     cond(state.finished, debug('stop clock', stopClock(clock))),
-  //     state.position
-  //   ]);
-  // }
+  const createChannel = () => {
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id', // (required)
+        channelName: 'My channel', // (required)
+        channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+        playSound: false, // (optional) default: true
+        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+      },
+      (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
+  };
 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   let buttonOpacity = new Value(1);
@@ -66,17 +40,6 @@ export default function Home({ navigation }: any) {
     },
   ];
 
-  // const buttonY = interpolateNode(Number(buttonOpacity), {
-  //   inputRange: [0, 1],
-  //   outputRange: [100, 0],
-  //   extrapolate: Extrapolate.CLAMP
-  // });
-
-  // const bgY = interpolateNode((Number(buttonOpacity)), {
-  //   inputRange: [0, 1],
-  //   outputRange: [-windowHeight / 3, 0],
-  //   extrapolate: Extrapolate.CLAMP
-  // });
   return (
     <View style={{ width: windowWidth - 200, height: windowHeight - 50 }}>
       <StatusBar backgroundColor="transparent" translucent={true} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Form from '../components/Form';
+import SignupForm from '../components/SignupForm';
 import Logo from '../components/Logo';
 
 const SignIn = ({ navigation }: any) => {
@@ -9,7 +9,7 @@ const SignIn = ({ navigation }: any) => {
     <View style={styles.container}>
       <StatusBar backgroundColor="transparent" translucent={true} />
       <Logo />
-      <Form name={name} />
+      <SignupForm name={name} />
       <View style={styles.signupTextCont}>
         <Text style={styles.signupText}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>

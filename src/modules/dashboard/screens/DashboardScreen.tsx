@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, StyleSheet, Text, View, Pressable, FlatList, Image, ActivityIndicator } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Pressable, FlatList, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import Animated from 'react-native-reanimated'
 import { ShowNotification, handleScheduleNotification, handleCancel } from '../../../shared/services/NotificationService'
 
@@ -21,38 +21,43 @@ const DashboardScreen = ({ drawerAnimationStyle, navigation }: any) => {
     last_name: string;
   };
 
-  const [users, setUsers] = useState<
-    | Array<{
-        avatar: string;
-        email: string;
-        first_name: number;
-        id: number;
-        last_name: string;
-      }>
-    | any
-  >([]);
-  const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  async function getData() {
-    const response = await DashboardService(page);
-    setLoading(false);
-    setUsers(users.concat(response));
+  type User = {
+    avatar: string;
+    email: string;
+    first_name: number;
+    id: number;
+    last_name: string;
   }
 
+  let onEndReachedCalledDuringMomentum = false;
+  const [users, setUsers] = useState<User[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
+
+  async function getData() {
+    setLoading(true)
+    const response = await DashboardService(page);
+    setLoading(false);
+    setUsers(response);
+  }
+console.log(page)
   console.log('users:', users);
 
   const handleLoadMore = async () => {
-    setPage(page + 1);
-    await getData();
+    if(page<8){
+      setIsMoreLoading(true);
+      const response = await DashboardService(page);
+      setUsers(users.concat(response));
+      onEndReachedCalledDuringMomentum = true
+    }
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator animating size="large" />
-      </View>
-    );
+  const renderFooter = () => {
+    if(isMoreLoading) return true;
+    return(
+      <ActivityIndicator size='large' color='#fff' style={{marginBottom: 10}} />
+    )
   }
 
   return (
@@ -68,8 +73,24 @@ const DashboardScreen = ({ drawerAnimationStyle, navigation }: any) => {
           padding: 20,
           paddingTop: StatusBar.currentHeight || 42,
         }}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={0}
+        initialNumToRender={4}
+        onEndReachedThreshold={0.1}
+        onMomentumScrollBegin={() => {onEndReachedCalledDuringMomentum = false}}
+        onEndReached={() => {
+          setPage(page+1);
+          setTimeout(() => {
+            if(page > 1 && !onEndReachedCalledDuringMomentum){
+              handleLoadMore();
+            }
+          }, 2000) 
+        }}
+        // refreshControl={
+        //   <RefreshControl 
+        //     refreshing={loading}
+        //     onRefresh={onRefresh}
+        //   />
+        // }
+        ListFooterComponent={renderFooter}
         renderItem={({ item, index }: { item: Data; index:number }) => {
           return (
             <Pressable style={styles.view} onPress={() => {navigation.navigate('Profile', { item: item }); ShowNotification('Hello', 'Welcome to '+item.first_name+"'s Profile", index)}}>

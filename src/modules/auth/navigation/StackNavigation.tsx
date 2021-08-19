@@ -7,6 +7,8 @@ import GetStartedScreen from '../../getStarted/screens/GetStartedScreen';
 import ProfileScreen from '../../dashboard/screens/ProfileScreen';
 import EditUserScreen from '../../user/screens/EditUserScreen';
 import CustomDrawer from '../../dashboard/navigation/CustomDrawer';
+import HomeScreen from '../../home/screens/HomeScreen';
+
 // import HomeScreen from '../../home/screens/HomeScreen';
 // import DashboardScreen from '../../dashboard/screens/DashboardScreen';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -128,6 +130,13 @@ const StackNavigation = () => {
         <Stack.Screen
           name="GetStarted"
           component={GetStartedScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
           options={{
             headerShown: false,
           }}

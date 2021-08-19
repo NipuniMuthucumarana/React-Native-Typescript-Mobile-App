@@ -3,8 +3,15 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import CustomDrawerItem from './CustomDrawerItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useApp } from '../../../shared/AppContext';
+ type User = {
+   setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
+   setIsAuthnticated: React.Dispatch<React.SetStateAction<boolean>>
+ }
 
 const CustomDrawerContent = ({ navigation }: any) => {
+  const { setCurrentUser, setIsAuthnticated } = useApp<User>();
   const [selectedTab, setSelectedTab] = useState<String>("Home")
   return (
     <DrawerContentScrollView scrollEnabled={true} contentContainerStyle={{ flex: 1 }}>
@@ -38,7 +45,7 @@ const CustomDrawerContent = ({ navigation }: any) => {
             <CustomDrawerItem label="Create User" icon="user-plus" isFocused={selectedTab=='Create User'} onPress={()=> {setSelectedTab('Create User'), navigation.navigate("CreateUser")}} />
           </View>
           <View style={{ marginTop: 250}}>
-            <CustomDrawerItem label="Log Out" icon="sign-out-alt" isFocused={selectedTab=='Log Out'} onPress={()=> {setSelectedTab('Log Out'), navigation.navigate("Home")}} />
+            <CustomDrawerItem label="Log Out" icon="sign-out-alt" isFocused={selectedTab=='Log Out'} onPress={()=> {setSelectedTab('Log Out'), navigation.navigate("GetStarted"), setCurrentUser(null), setIsAuthnticated(false)}} />
           </View>
         </View>
       </View>

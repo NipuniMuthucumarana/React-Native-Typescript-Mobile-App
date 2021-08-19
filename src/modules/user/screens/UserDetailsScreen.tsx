@@ -6,16 +6,15 @@ import Animated from 'react-native-reanimated';
 import Header from '../../../shared/components/Header';
 import DeleteUserService from '../services/DeleteUserService';
 import Loading from '../../home/components/Loading'
+type User = {
+  name: string;
+  job: string;
+  id: string;
+}
 
 const UserDetailScreen = ({ drawerAnimationStyle, navigation }: any) => {
   const offset: number = 0;
-  const [users, setUsers] = useState<
-    Array<{
-      name: string;
-      job: string;
-      id: string;
-    }>
-  >();
+  const [users, setUsers] = useState<User[]>();
   const [limit, setLimit] = useState(4);
   const [length, setLength] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -82,9 +81,10 @@ const UserDetailScreen = ({ drawerAnimationStyle, navigation }: any) => {
           const scrollViewHeight = e.nativeEvent.layoutMeasurement.height;
           const contentHeight = e.nativeEvent.contentSize.height;
           const isScrolledToBottom = scrollViewHeight + scrollPosition;
+          console.log(scrollPosition, scrollViewHeight, contentHeight,  isScrolledToBottom)
 
           if (isScrolledToBottom >= contentHeight - 50 && limit <= length) {
-            setLimit(limit + 1);
+            setLimit(limit + 2);
           }
         }}>
         <View>{items}</View>

@@ -1,14 +1,14 @@
 import { Alert } from 'react-native';
 import axios, { AxiosResponse } from 'axios';
 
-interface Props {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  navigation: any;
-}
+// interface Props {
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+//   navigation: any;
+// }
 
-const SignupService = async ({ email, password, confirmPassword, navigation }: Props) => {
+const SignupService = async ( email: string, password: string, confirmPassword: string, navigation: any ) => {
   try {
     type Response = {
       id: number,
@@ -30,18 +30,18 @@ const SignupService = async ({ email, password, confirmPassword, navigation }: P
       },
     };
 
-    if (data.email === '' && data.password === '') {
-      return Alert.alert('Validation', 'Email & Password are required!', [{ text: 'OK' }]);
-    } else if (data.email === '') {
-      return Alert.alert('Validation', 'Email is required!', [{ text: 'OK' }]);
-    } else if (data.password === '') {
-      return Alert.alert('Validation', 'Password is required!', [{ text: 'OK' }]);
-    } else if (data.confirmPassword === '') {
-      return Alert.alert('Validation', 'Confirm Password is required!', [{ text: 'OK' }]);
-    }
-    if (password !== confirmPassword) {
-      return Alert.alert('Validation', 'Confirm Password is not match with password!', [{ text: 'OK' }]);
-    }
+    // if (data.email === '' && data.password === '') {
+    //   return Alert.alert('Validation', 'Email & Password are required!', [{ text: 'OK' }]);
+    // } else if (data.email === '') {
+    //   return Alert.alert('Validation', 'Email is required!', [{ text: 'OK' }]);
+    // } else if (data.password === '') {
+    //   return Alert.alert('Validation', 'Password is required!', [{ text: 'OK' }]);
+    // } else if (data.confirmPassword === '') {
+    //   return Alert.alert('Validation', 'Confirm Password is required!', [{ text: 'OK' }]);
+    // }
+    // if (password !== confirmPassword) {
+    //   return Alert.alert('Validation', 'Confirm Password is not match with password!', [{ text: 'OK' }]);
+    // }
 
     const response = await axios.post<Response, AxiosResponse<Response>>(url, data, config);
 

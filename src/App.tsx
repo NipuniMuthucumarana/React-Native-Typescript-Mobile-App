@@ -1,29 +1,55 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import StackNavigation from './modules/auth/navigation/StackNavigation';
-import PushNotification, {Importance} from 'react-native-push-notification';
-import { ShowNotification, handleScheduleNotification, handleCancel } from './shared/services/NotificationService'
+import { createStackNavigator } from '@react-navigation/stack';
+import { AppContextProvider } from './shared/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
-  useEffect(() => {
-    //createChannel();
-    //ShowNotification('Hello', 'Welcome to my App');
-  }, [])
-  return <StackNavigation />;
+import { useNavigation } from '@react-navigation/native';
+
+
+
+import CustomDrawer from './modules/dashboard/navigation/CustomDrawer'
+
+const Stack = createStackNavigator();
+
+type User = {
+  avatar: string;
+  email: string;
+  first_name: number;
+  id: number;
+  last_name: string;
 }
 
+const App =  () => {
+  // const [userData, setUserData] = useState<User[]>()
+  // const [isAuthnticated, setIsAuthnticated] = useState<boolean>(false)
+  // useEffect(() => {
+  //   async function getData() {
+  //     try {
+  //       const userInfo = await AsyncStorage.getItem('user');
+  //       if(userInfo === null) {
+  //         setIsAuthnticated(false);
+  //       } else {
+  //         setUserData(JSON.parse(userInfo))
+  //         setIsAuthnticated(true)
+  //         console.log('logged-user', userInfo);
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   getData()
+  // }, [])
 
-// const createChannel = () => {
-//   PushNotification.createChannel(
-//     {
-//       channelId: 'channel-id', // (required)
-//       channelName: 'My channel', // (required)
-//       // channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
-//       // playSound: false, // (optional) default: true
-//       // soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-//       // importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-//       // vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-//     },
-//     (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-//   );
-// };
+  // console.log(userData)
+  
+  return (
+     <AppContextProvider>
+          <StackNavigation />
+      </AppContextProvider>
+  );
+}
+
+export default App;

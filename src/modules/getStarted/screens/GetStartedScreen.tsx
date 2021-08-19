@@ -1,21 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, StatusBar, ImageBackground, useWindowDimensions, TouchableOpacity } from 'react-native';
 //import Animated, { Easing } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import { Permission, PERMISSION_TYPE } from '../services/AppPermissionService';
 import PushNotification, { Importance } from 'react-native-push-notification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useApp } from '../../../shared/AppContext';
 
 export default function Home({ navigation }: any) {
   const { Value, cond, eq, set } = Animated;
+  const { currentUser, isAuthnticated } = useApp();
+  // const [user, setUser] = useState<User[]>([])
+  // const [isAuthnticated, setIsAuthnticated] = useState<boolean>(false)
 
   useEffect(() => {
-    async function appPermission() {
-      createChannel();
-      await Permission.checkPermission(PERMISSION_TYPE.location);
-    }
     appPermission();
+    //getData();
   }, []);
+
+  async function appPermission() {
+    createChannel();
+    await Permission.checkPermission(PERMISSION_TYPE.location);
+  }
+
+  // async function getData() {
+  //   try {
+  //     const userInfo:any = await AsyncStorage.getItem('user');
+  //     if(userInfo === null) {
+  //       setIsAuthnticated(false);
+  //     } else {
+  //       setUser(userInfo)
+  //       setIsAuthnticated(true)
+  //       console.log('logged-user', userInfo);
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const createChannel = () => {
     PushNotification.createChannel(
@@ -48,20 +70,20 @@ export default function Home({ navigation }: any) {
           <Text style={styles.text}>Welcome !</Text>
         </View>
         <View style={styles.position}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <TouchableOpacity onPress={isAuthnticated ? (() => {navigation.navigate('DrawerRoutes', {email:currentUser.email})}) : () => navigation.navigate('SignIn')}>
             <TapGestureHandler onHandlerStateChange={onStateChange}>
               <Animated.View style={{ ...styles.button, opacity: buttonOpacity }}>
-                <Text style={styles.buttonText}>Sign In</Text>
+                <Text style={styles.buttonText}>Continue</Text>
               </Animated.View>
             </TapGestureHandler>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <TapGestureHandler onHandlerStateChange={onStateChange}>
               <Animated.View style={{ ...styles.button, opacity: buttonOpacity }}>
                 <Text style={styles.buttonText}>Sign Up</Text>
               </Animated.View>
             </TapGestureHandler>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ImageBackground>
     </View>

@@ -2,14 +2,20 @@ import { ToastAndroid } from 'react-native';
 import { Alert } from 'react-native';
 import axios, { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-interface Props {
+// interface Props {
+//   // name: string;
+//   // job: string;
+//   users: Array<{
+//     name: string;
+//     job: string;
+//     id: string;
+//   }>;
+// }
+
+type User = {
   name: string;
   job: string;
-  users: Array<{
-    name: string;
-    job: string;
-    id: string;
-  }>;
+  id: string;
 }
 interface Response {
   name: string;
@@ -17,7 +23,7 @@ interface Response {
   id: string;
 }
 
-const CreateUserService = async ({ name, job, users }: Props) => {
+const CreateUserService = async ( name: string, job: string, users: User[]) => {
   const url = 'https://reqres.in/api/users';
 
   const data = {
@@ -32,13 +38,13 @@ const CreateUserService = async ({ name, job, users }: Props) => {
     },
   };
 
-  if (data.name === '' && data.job === '') {
-    return Alert.alert('Validation', 'Name & job are required!', [{ text: 'OK' }]);
-  } else if (data.name === '') {
-    return Alert.alert('Validation', 'Name is required!', [{ text: 'OK' }]);
-  } else if (data.job === '') {
-    return Alert.alert('Validation', 'Job is required!', [{ text: 'OK' }]);
-  }
+  // if (data.name === '' && data.job === '') {
+  //   return Alert.alert('Validation', 'Name & job are required!', [{ text: 'OK' }]);
+  // } else if (data.name === '') {
+  //   return Alert.alert('Validation', 'Name is required!', [{ text: 'OK' }]);
+  // } else if (data.job === '') {
+  //   return Alert.alert('Validation', 'Job is required!', [{ text: 'OK' }]);
+  // }
 
   const response = await axios.post<Response, AxiosResponse<Response>>(url, data, config);
 

@@ -5,6 +5,12 @@ import HomeService from '../services/HomeService';
 import Loading from '../components/Loading';
 import Header from '../../../shared/components/Header'
 import Animated from 'react-native-reanimated'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useApp } from '../../../shared/AppContext';
+
+
+//const UserContext = React.createContext(null)
+
 
 // type RootDrawerParamList = {
 //   Home: {
@@ -27,18 +33,17 @@ interface Data {
   last_name: string;
 }
 
+type User = {
+  name: string;
+  job: string;
+  id: string;
+}
+
 const HomeScreen = ({drawerAnimationStyle, email, navigation }: Props) => {
+  const { setCurrentUser, currentUser, setIsAuthnticated } = useApp();
   const [refresh, setRefresh] = useState<boolean>(false);
-  const [users, setUsers] = useState<
-    | Array<{
-        avatar: string;
-        email: string;
-        first_name: number;
-        id: number;
-        last_name: string;
-      }>
-    | any
-  >([]);
+  const [users, setUsers] = useState<User[]| any>([]);
+  const [user, setUser] = useState<User[]| any>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -52,29 +57,36 @@ const HomeScreen = ({drawerAnimationStyle, email, navigation }: Props) => {
     await users.map(async (user: Data) => {
       if (user.email === email) {
         setLoading(false);
-        setUsers(user);
+        setUser(user);
+        setCurrentUser(user);
+        setIsAuthnticated(true);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
       }
     });
   }
 
-  console.log('users:', users);
+  console.log('users:', currentUser);
   
   return (
     <Animated.View style={{...styles.container, ...drawerAnimationStyle}}>
       <StatusBar backgroundColor="transparent" translucent={true} />
       {loading ? (
         <Loading show={loading} />
-      ) : (
-        <View style={styles.header}>
-          {/* Header */}
-          <Header title="Home" navigation={navigation} />
-          {/* Content */}
-          <View style={styles.view}>
-            <Image source={{ uri: users.avatar }} style={styles.image} />
-            <Text style={styles.text}>{users.first_name+ " "+ users.last_name}</Text>
-            <Text style={styles.textEmail}>{users.email}</Text>
-          </View>
-        </View>
+        ) : (
+        // <UserContext.Provider value={user}>
+        //   {
+            <View style={styles.header}>
+              {/* Header */}
+              <Header title="Home" navigation={navigation} />
+              {/* Content */}
+              <View style={styles.view}>
+                <Image source={{ uri: user.avatar }} style={styles.image} />
+                <Text style={styles.text}>{user.first_name+ " "+ user.last_name}</Text>
+                <Text style={styles.textEmail}>{user.email}</Text>
+              </View>
+            </View>
+        //   }
+        // </UserContext.Provider>
       )}
     </Animated.View>
   );

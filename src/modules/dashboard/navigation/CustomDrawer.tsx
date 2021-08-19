@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
-import { RouteProp } from '@react-navigation/native';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import HomeScreen from '../../home/screens/HomeScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import CreateUserScreen from '../../user/screens/CreateUserScreen';
@@ -91,9 +91,9 @@ const CustomDrawer = ({ route }: Props) => {
         <Drawer.Screen name="UserDetails">
           {props => <UserDetailScreen {...props} drawerAnimationStyle={animatedStyle}/>}
         </Drawer.Screen>
-        <Drawer.Screen name="LogOut">
-          {props => <UserDetailScreen {...props} drawerAnimationStyle={animatedStyle}/>}
-        </Drawer.Screen>
+        {/* <Drawer.Screen name="LogOut">
+          {(props) => props.navigation.navigate('GetStarted')}
+        </Drawer.Screen> */}
       </Drawer.Navigator>
     </View>
   )
